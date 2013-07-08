@@ -1,5 +1,3 @@
-//greedy tsp 
-//greedly taking a shorted node form current node and building tour
 /*
  *Kartik Singal @ ka4tik
  */
@@ -16,9 +14,21 @@ using namespace std;
 #define s(x) scanf("%lld",&x)
 #define ii pair<double,double>
 #define LL long long
+vector<ii> v;
+int N;
 long double distt(ii a ,ii b)
 {
     return sqrt((double(a.first-b.first)*double(a.first-b.first))+(double(a.second-b.second)*double(a.second-b.second)));
+}
+long double caltourlen(vector<int> tour)
+{
+           long double  tourlen=0;
+           for(int i=1;i<tour.size();i++)
+           {
+               tourlen+=(distt(v[tour[i-1]],v[tour[i]]));
+           }
+           tourlen+=(distt(v[tour[0]],v[tour[tour.size()-1]]));
+           return tourlen;
 }
 int main(int argc,char *argv[])
 {
@@ -29,9 +39,8 @@ int main(int argc,char *argv[])
     else
     {
 
-        int N;
         file>>N;
-        vector<ii> v(N);
+        v.resize(N);
         for(int i=0;i<N;i++)
         {
             file>>v[i].first;
@@ -45,7 +54,7 @@ int main(int argc,char *argv[])
 
         clock_t start=clock();
 
-        while(clock()-start<CLOCKS_PER_SEC*2){//run for 2 sec
+        while(clock()-start<CLOCKS_PER_SEC*5){//run for 2 sec
 
             random_shuffle(order.begin(),order.end());
 
@@ -81,8 +90,31 @@ int main(int argc,char *argv[])
                 finaltour=tour;
             }
 
-            //cout<<tourlen<<" "<<finaltourlen<<endl;
         }
+        start=clock();
+        while(clock()-start<CLOCKS_PER_SEC*10){//run for 2 sec
+
+            for(int i=0;i<N;i++)
+            {
+                //cout<<"i "<<i<<endl;
+               if(clock()-start>CLOCKS_PER_SEC*10)
+                   break;
+                for(int j=i+1;j<N;j++)
+                {
+                    
+                    swap(finaltour[i],finaltour[j]);
+                    long double t=caltourlen(finaltour);
+                    if(t<finaltourlen)
+                    {
+                        finaltourlen=t;
+                    }
+                    else
+                    swap(finaltour[i],finaltour[j]);
+                }
+            }
+        }
+
+
         printf("%.8llf 0\n",finaltourlen);
 
         for(int i=0;i<N;i++)

@@ -16,7 +16,7 @@ def solveIt(inputData):
 
     # Runs the command: java Solver -file=tmp.data
 
-    process = Popen(['./tspgreedy', tmpFileName],stdout=PIPE)
+    process = Popen(['./tsp2opt', tmpFileName],stdout=PIPE)
     (stdout, stderr) = process.communicate()
 
     # removes the temporay file
